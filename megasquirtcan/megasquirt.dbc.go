@@ -10060,6 +10060,402 @@ func (m *megasquirt_gp63) UnmarshalFrame(f can.Frame) error {
 	return nil
 }
 
+// mscop_egtReader provides read access to a mscop_egt message.
+type mscop_egtReader interface {
+	// egt_ext1 returns the value of the egt_ext1 signal.
+	egt_ext1() uint16
+	// egt_ext1_error returns the value of the egt_ext1_error signal.
+	egt_ext1_error() uint8
+}
+
+// mscop_egtWriter provides write access to a mscop_egt message.
+type mscop_egtWriter interface {
+	// CopyFrom copies all values from mscop_egtReader.
+	CopyFrom(mscop_egtReader) *mscop_egt
+	// Setegt_ext1 sets the value of the egt_ext1 signal.
+	Setegt_ext1(uint16) *mscop_egt
+	// Setegt_ext1_error sets the value of the egt_ext1_error signal.
+	Setegt_ext1_error(uint8) *mscop_egt
+}
+
+type mscop_egt struct {
+	xxx_egt_ext1       uint16
+	xxx_egt_ext1_error uint8
+}
+
+func Newmscop_egt() *mscop_egt {
+	m := &mscop_egt{}
+	m.Reset()
+	return m
+}
+
+func (m *mscop_egt) Reset() {
+	m.xxx_egt_ext1 = 0
+	m.xxx_egt_ext1_error = 0
+}
+
+func (m *mscop_egt) CopyFrom(o mscop_egtReader) *mscop_egt {
+	m.xxx_egt_ext1 = o.egt_ext1()
+	m.xxx_egt_ext1_error = o.egt_ext1_error()
+	return m
+}
+
+// Descriptor returns the mscop_egt descriptor.
+func (m *mscop_egt) Descriptor() *descriptor.Message {
+	return Messages().mscop_egt.Message
+}
+
+// String returns a compact string representation of the message.
+func (m *mscop_egt) String() string {
+	return cantext.MessageString(m)
+}
+
+func (m *mscop_egt) egt_ext1() uint16 {
+	return m.xxx_egt_ext1
+}
+
+func (m *mscop_egt) Setegt_ext1(v uint16) *mscop_egt {
+	m.xxx_egt_ext1 = uint16(Messages().mscop_egt.egt_ext1.SaturatedCastUnsigned(uint64(v)))
+	return m
+}
+
+func (m *mscop_egt) egt_ext1_error() uint8 {
+	return m.xxx_egt_ext1_error
+}
+
+func (m *mscop_egt) Setegt_ext1_error(v uint8) *mscop_egt {
+	m.xxx_egt_ext1_error = uint8(Messages().mscop_egt.egt_ext1_error.SaturatedCastUnsigned(uint64(v)))
+	return m
+}
+
+// Frame returns a CAN frame representing the message.
+func (m *mscop_egt) Frame() can.Frame {
+	md := Messages().mscop_egt
+	f := can.Frame{ID: md.ID, IsExtended: md.IsExtended, Length: md.Length}
+	md.egt_ext1.MarshalUnsigned(&f.Data, uint64(m.xxx_egt_ext1))
+	md.egt_ext1_error.MarshalUnsigned(&f.Data, uint64(m.xxx_egt_ext1_error))
+	return f
+}
+
+// MarshalFrame encodes the message as a CAN frame.
+func (m *mscop_egt) MarshalFrame() (can.Frame, error) {
+	return m.Frame(), nil
+}
+
+// UnmarshalFrame decodes the message from a CAN frame.
+func (m *mscop_egt) UnmarshalFrame(f can.Frame) error {
+	md := Messages().mscop_egt
+	switch {
+	case f.ID != md.ID:
+		return fmt.Errorf(
+			"unmarshal mscop_egt: expects ID 2025 (got %s with ID %d)", f.String(), f.ID,
+		)
+	case f.Length != md.Length:
+		return fmt.Errorf(
+			"unmarshal mscop_egt: expects length 3 (got %s with length %d)", f.String(), f.Length,
+		)
+	case f.IsRemote:
+		return fmt.Errorf(
+			"unmarshal mscop_egt: expects non-remote frame (got remote frame %s)", f.String(),
+		)
+	case f.IsExtended != md.IsExtended:
+		return fmt.Errorf(
+			"unmarshal mscop_egt: expects standard ID (got %s with extended ID)", f.String(),
+		)
+	}
+	m.xxx_egt_ext1 = uint16(md.egt_ext1.UnmarshalUnsigned(f.Data))
+	m.xxx_egt_ext1_error = uint8(md.egt_ext1_error.UnmarshalUnsigned(f.Data))
+	return nil
+}
+
+// mscop_analogReader provides read access to a mscop_analog message.
+type mscop_analogReader interface {
+	// adc_ext1 returns the physical value of the adc_ext1 signal.
+	adc_ext1() float64
+	// adc_ext2 returns the physical value of the adc_ext2 signal.
+	adc_ext2() float64
+	// adc_ext3 returns the physical value of the adc_ext3 signal.
+	adc_ext3() float64
+	// adc_ext4 returns the physical value of the adc_ext4 signal.
+	adc_ext4() float64
+}
+
+// mscop_analogWriter provides write access to a mscop_analog message.
+type mscop_analogWriter interface {
+	// CopyFrom copies all values from mscop_analogReader.
+	CopyFrom(mscop_analogReader) *mscop_analog
+	// Setadc_ext1 sets the physical value of the adc_ext1 signal.
+	Setadc_ext1(float64) *mscop_analog
+	// Setadc_ext2 sets the physical value of the adc_ext2 signal.
+	Setadc_ext2(float64) *mscop_analog
+	// Setadc_ext3 sets the physical value of the adc_ext3 signal.
+	Setadc_ext3(float64) *mscop_analog
+	// Setadc_ext4 sets the physical value of the adc_ext4 signal.
+	Setadc_ext4(float64) *mscop_analog
+}
+
+type mscop_analog struct {
+	xxx_adc_ext1 uint16
+	xxx_adc_ext2 uint16
+	xxx_adc_ext3 uint16
+	xxx_adc_ext4 uint16
+}
+
+func Newmscop_analog() *mscop_analog {
+	m := &mscop_analog{}
+	m.Reset()
+	return m
+}
+
+func (m *mscop_analog) Reset() {
+	m.xxx_adc_ext1 = 0
+	m.xxx_adc_ext2 = 0
+	m.xxx_adc_ext3 = 0
+	m.xxx_adc_ext4 = 0
+}
+
+func (m *mscop_analog) CopyFrom(o mscop_analogReader) *mscop_analog {
+	m.Setadc_ext1(o.adc_ext1())
+	m.Setadc_ext2(o.adc_ext2())
+	m.Setadc_ext3(o.adc_ext3())
+	m.Setadc_ext4(o.adc_ext4())
+	return m
+}
+
+// Descriptor returns the mscop_analog descriptor.
+func (m *mscop_analog) Descriptor() *descriptor.Message {
+	return Messages().mscop_analog.Message
+}
+
+// String returns a compact string representation of the message.
+func (m *mscop_analog) String() string {
+	return cantext.MessageString(m)
+}
+
+func (m *mscop_analog) adc_ext1() float64 {
+	return Messages().mscop_analog.adc_ext1.ToPhysical(float64(m.xxx_adc_ext1))
+}
+
+func (m *mscop_analog) Setadc_ext1(v float64) *mscop_analog {
+	m.xxx_adc_ext1 = uint16(Messages().mscop_analog.adc_ext1.FromPhysical(v))
+	return m
+}
+
+func (m *mscop_analog) adc_ext2() float64 {
+	return Messages().mscop_analog.adc_ext2.ToPhysical(float64(m.xxx_adc_ext2))
+}
+
+func (m *mscop_analog) Setadc_ext2(v float64) *mscop_analog {
+	m.xxx_adc_ext2 = uint16(Messages().mscop_analog.adc_ext2.FromPhysical(v))
+	return m
+}
+
+func (m *mscop_analog) adc_ext3() float64 {
+	return Messages().mscop_analog.adc_ext3.ToPhysical(float64(m.xxx_adc_ext3))
+}
+
+func (m *mscop_analog) Setadc_ext3(v float64) *mscop_analog {
+	m.xxx_adc_ext3 = uint16(Messages().mscop_analog.adc_ext3.FromPhysical(v))
+	return m
+}
+
+func (m *mscop_analog) adc_ext4() float64 {
+	return Messages().mscop_analog.adc_ext4.ToPhysical(float64(m.xxx_adc_ext4))
+}
+
+func (m *mscop_analog) Setadc_ext4(v float64) *mscop_analog {
+	m.xxx_adc_ext4 = uint16(Messages().mscop_analog.adc_ext4.FromPhysical(v))
+	return m
+}
+
+// Frame returns a CAN frame representing the message.
+func (m *mscop_analog) Frame() can.Frame {
+	md := Messages().mscop_analog
+	f := can.Frame{ID: md.ID, IsExtended: md.IsExtended, Length: md.Length}
+	md.adc_ext1.MarshalUnsigned(&f.Data, uint64(m.xxx_adc_ext1))
+	md.adc_ext2.MarshalUnsigned(&f.Data, uint64(m.xxx_adc_ext2))
+	md.adc_ext3.MarshalUnsigned(&f.Data, uint64(m.xxx_adc_ext3))
+	md.adc_ext4.MarshalUnsigned(&f.Data, uint64(m.xxx_adc_ext4))
+	return f
+}
+
+// MarshalFrame encodes the message as a CAN frame.
+func (m *mscop_analog) MarshalFrame() (can.Frame, error) {
+	return m.Frame(), nil
+}
+
+// UnmarshalFrame decodes the message from a CAN frame.
+func (m *mscop_analog) UnmarshalFrame(f can.Frame) error {
+	md := Messages().mscop_analog
+	switch {
+	case f.ID != md.ID:
+		return fmt.Errorf(
+			"unmarshal mscop_analog: expects ID 2026 (got %s with ID %d)", f.String(), f.ID,
+		)
+	case f.Length != md.Length:
+		return fmt.Errorf(
+			"unmarshal mscop_analog: expects length 8 (got %s with length %d)", f.String(), f.Length,
+		)
+	case f.IsRemote:
+		return fmt.Errorf(
+			"unmarshal mscop_analog: expects non-remote frame (got remote frame %s)", f.String(),
+		)
+	case f.IsExtended != md.IsExtended:
+		return fmt.Errorf(
+			"unmarshal mscop_analog: expects standard ID (got %s with extended ID)", f.String(),
+		)
+	}
+	m.xxx_adc_ext1 = uint16(md.adc_ext1.UnmarshalUnsigned(f.Data))
+	m.xxx_adc_ext2 = uint16(md.adc_ext2.UnmarshalUnsigned(f.Data))
+	m.xxx_adc_ext3 = uint16(md.adc_ext3.UnmarshalUnsigned(f.Data))
+	m.xxx_adc_ext4 = uint16(md.adc_ext4.UnmarshalUnsigned(f.Data))
+	return nil
+}
+
+// mscop_knockReader provides read access to a mscop_knock message.
+type mscop_knockReader interface {
+	// knock_ext returns the physical value of the knock_ext signal.
+	knock_ext() float64
+	// knock_rpm returns the value of the knock_rpm signal.
+	knock_rpm() uint16
+	// knock_integ_time returns the value of the knock_integ_time signal.
+	knock_integ_time() uint8
+	// knock_error returns the value of the knock_error signal.
+	knock_error() uint8
+}
+
+// mscop_knockWriter provides write access to a mscop_knock message.
+type mscop_knockWriter interface {
+	// CopyFrom copies all values from mscop_knockReader.
+	CopyFrom(mscop_knockReader) *mscop_knock
+	// Setknock_ext sets the physical value of the knock_ext signal.
+	Setknock_ext(float64) *mscop_knock
+	// Setknock_rpm sets the value of the knock_rpm signal.
+	Setknock_rpm(uint16) *mscop_knock
+	// Setknock_integ_time sets the value of the knock_integ_time signal.
+	Setknock_integ_time(uint8) *mscop_knock
+	// Setknock_error sets the value of the knock_error signal.
+	Setknock_error(uint8) *mscop_knock
+}
+
+type mscop_knock struct {
+	xxx_knock_ext        uint16
+	xxx_knock_rpm        uint16
+	xxx_knock_integ_time uint8
+	xxx_knock_error      uint8
+}
+
+func Newmscop_knock() *mscop_knock {
+	m := &mscop_knock{}
+	m.Reset()
+	return m
+}
+
+func (m *mscop_knock) Reset() {
+	m.xxx_knock_ext = 0
+	m.xxx_knock_rpm = 0
+	m.xxx_knock_integ_time = 0
+	m.xxx_knock_error = 0
+}
+
+func (m *mscop_knock) CopyFrom(o mscop_knockReader) *mscop_knock {
+	m.Setknock_ext(o.knock_ext())
+	m.xxx_knock_rpm = o.knock_rpm()
+	m.xxx_knock_integ_time = o.knock_integ_time()
+	m.xxx_knock_error = o.knock_error()
+	return m
+}
+
+// Descriptor returns the mscop_knock descriptor.
+func (m *mscop_knock) Descriptor() *descriptor.Message {
+	return Messages().mscop_knock.Message
+}
+
+// String returns a compact string representation of the message.
+func (m *mscop_knock) String() string {
+	return cantext.MessageString(m)
+}
+
+func (m *mscop_knock) knock_ext() float64 {
+	return Messages().mscop_knock.knock_ext.ToPhysical(float64(m.xxx_knock_ext))
+}
+
+func (m *mscop_knock) Setknock_ext(v float64) *mscop_knock {
+	m.xxx_knock_ext = uint16(Messages().mscop_knock.knock_ext.FromPhysical(v))
+	return m
+}
+
+func (m *mscop_knock) knock_rpm() uint16 {
+	return m.xxx_knock_rpm
+}
+
+func (m *mscop_knock) Setknock_rpm(v uint16) *mscop_knock {
+	m.xxx_knock_rpm = uint16(Messages().mscop_knock.knock_rpm.SaturatedCastUnsigned(uint64(v)))
+	return m
+}
+
+func (m *mscop_knock) knock_integ_time() uint8 {
+	return m.xxx_knock_integ_time
+}
+
+func (m *mscop_knock) Setknock_integ_time(v uint8) *mscop_knock {
+	m.xxx_knock_integ_time = uint8(Messages().mscop_knock.knock_integ_time.SaturatedCastUnsigned(uint64(v)))
+	return m
+}
+
+func (m *mscop_knock) knock_error() uint8 {
+	return m.xxx_knock_error
+}
+
+func (m *mscop_knock) Setknock_error(v uint8) *mscop_knock {
+	m.xxx_knock_error = uint8(Messages().mscop_knock.knock_error.SaturatedCastUnsigned(uint64(v)))
+	return m
+}
+
+// Frame returns a CAN frame representing the message.
+func (m *mscop_knock) Frame() can.Frame {
+	md := Messages().mscop_knock
+	f := can.Frame{ID: md.ID, IsExtended: md.IsExtended, Length: md.Length}
+	md.knock_ext.MarshalUnsigned(&f.Data, uint64(m.xxx_knock_ext))
+	md.knock_rpm.MarshalUnsigned(&f.Data, uint64(m.xxx_knock_rpm))
+	md.knock_integ_time.MarshalUnsigned(&f.Data, uint64(m.xxx_knock_integ_time))
+	md.knock_error.MarshalUnsigned(&f.Data, uint64(m.xxx_knock_error))
+	return f
+}
+
+// MarshalFrame encodes the message as a CAN frame.
+func (m *mscop_knock) MarshalFrame() (can.Frame, error) {
+	return m.Frame(), nil
+}
+
+// UnmarshalFrame decodes the message from a CAN frame.
+func (m *mscop_knock) UnmarshalFrame(f can.Frame) error {
+	md := Messages().mscop_knock
+	switch {
+	case f.ID != md.ID:
+		return fmt.Errorf(
+			"unmarshal mscop_knock: expects ID 2027 (got %s with ID %d)", f.String(), f.ID,
+		)
+	case f.Length != md.Length:
+		return fmt.Errorf(
+			"unmarshal mscop_knock: expects length 6 (got %s with length %d)", f.String(), f.Length,
+		)
+	case f.IsRemote:
+		return fmt.Errorf(
+			"unmarshal mscop_knock: expects non-remote frame (got remote frame %s)", f.String(),
+		)
+	case f.IsExtended != md.IsExtended:
+		return fmt.Errorf(
+			"unmarshal mscop_knock: expects standard ID (got %s with extended ID)", f.String(),
+		)
+	}
+	m.xxx_knock_ext = uint16(md.knock_ext.UnmarshalUnsigned(f.Data))
+	m.xxx_knock_rpm = uint16(md.knock_rpm.UnmarshalUnsigned(f.Data))
+	m.xxx_knock_integ_time = uint8(md.knock_integ_time.UnmarshalUnsigned(f.Data))
+	m.xxx_knock_error = uint8(md.knock_error.UnmarshalUnsigned(f.Data))
+	return nil
+}
+
 // Nodes returns the megasquirt node descriptors.
 func Nodes() *NodesDescriptor {
 	return nd
@@ -10067,6 +10463,7 @@ func Nodes() *NodesDescriptor {
 
 // NodesDescriptor contains all megasquirt node descriptors.
 type NodesDescriptor struct {
+	Vector__XXX *descriptor.Node
 }
 
 // Messages returns the megasquirt message descriptors.
@@ -10140,6 +10537,9 @@ type MessagesDescriptor struct {
 	megasquirt_gp61 *megasquirt_gp61Descriptor
 	megasquirt_gp62 *megasquirt_gp62Descriptor
 	megasquirt_gp63 *megasquirt_gp63Descriptor
+	mscop_egt       *mscop_egtDescriptor
+	mscop_analog    *mscop_analogDescriptor
+	mscop_knock     *mscop_knockDescriptor
 }
 
 // UnmarshalFrame unmarshals the provided megasquirt CAN frame.
@@ -10525,6 +10925,24 @@ func (md *MessagesDescriptor) UnmarshalFrame(f can.Frame) (generated.Message, er
 		return &msg, nil
 	case md.megasquirt_gp63.ID:
 		var msg megasquirt_gp63
+		if err := msg.UnmarshalFrame(f); err != nil {
+			return nil, fmt.Errorf("unmarshal megasquirt frame: %w", err)
+		}
+		return &msg, nil
+	case md.mscop_egt.ID:
+		var msg mscop_egt
+		if err := msg.UnmarshalFrame(f); err != nil {
+			return nil, fmt.Errorf("unmarshal megasquirt frame: %w", err)
+		}
+		return &msg, nil
+	case md.mscop_analog.ID:
+		var msg mscop_analog
+		if err := msg.UnmarshalFrame(f); err != nil {
+			return nil, fmt.Errorf("unmarshal megasquirt frame: %w", err)
+		}
+		return &msg, nil
+	case md.mscop_knock.ID:
+		var msg mscop_knock
 		if err := msg.UnmarshalFrame(f); err != nil {
 			return nil, fmt.Errorf("unmarshal megasquirt frame: %w", err)
 		}
@@ -11091,12 +11509,36 @@ type megasquirt_gp63Descriptor struct {
 	spare63_3         *descriptor.Signal
 }
 
+type mscop_egtDescriptor struct {
+	*descriptor.Message
+	egt_ext1       *descriptor.Signal
+	egt_ext1_error *descriptor.Signal
+}
+
+type mscop_analogDescriptor struct {
+	*descriptor.Message
+	adc_ext1 *descriptor.Signal
+	adc_ext2 *descriptor.Signal
+	adc_ext3 *descriptor.Signal
+	adc_ext4 *descriptor.Signal
+}
+
+type mscop_knockDescriptor struct {
+	*descriptor.Message
+	knock_ext        *descriptor.Signal
+	knock_rpm        *descriptor.Signal
+	knock_integ_time *descriptor.Signal
+	knock_error      *descriptor.Signal
+}
+
 // Database returns the megasquirt database descriptor.
 func (md *MessagesDescriptor) Database() *descriptor.Database {
 	return d
 }
 
-var nd = &NodesDescriptor{}
+var nd = &NodesDescriptor{
+	Vector__XXX: d.Nodes[0],
+}
 
 var md = &MessagesDescriptor{
 	megasquirt_gp0: &megasquirt_gp0Descriptor{
@@ -11591,6 +12033,25 @@ var md = &MessagesDescriptor{
 		spare63_1:         d.Messages[63].Signals[2],
 		spare63_2:         d.Messages[63].Signals[3],
 		spare63_3:         d.Messages[63].Signals[4],
+	},
+	mscop_egt: &mscop_egtDescriptor{
+		Message:        d.Messages[64],
+		egt_ext1:       d.Messages[64].Signals[0],
+		egt_ext1_error: d.Messages[64].Signals[1],
+	},
+	mscop_analog: &mscop_analogDescriptor{
+		Message:  d.Messages[65],
+		adc_ext1: d.Messages[65].Signals[0],
+		adc_ext2: d.Messages[65].Signals[1],
+		adc_ext3: d.Messages[65].Signals[2],
+		adc_ext4: d.Messages[65].Signals[3],
+	},
+	mscop_knock: &mscop_knockDescriptor{
+		Message:          d.Messages[66],
+		knock_ext:        d.Messages[66].Signals[0],
+		knock_rpm:        d.Messages[66].Signals[1],
+		knock_integ_time: d.Messages[66].Signals[2],
+		knock_error:      d.Messages[66].Signals[3],
 	},
 }
 
@@ -18751,6 +19212,260 @@ var d = (*descriptor.Database)(&descriptor.Database{
 			CycleTime:  (time.Duration)(0),
 			DelayTime:  (time.Duration)(0),
 		}),
+		(*descriptor.Message)(&descriptor.Message{
+			Name:        (string)("mscop_egt"),
+			ID:          (uint32)(2025),
+			IsExtended:  (bool)(false),
+			Length:      (uint8)(3),
+			SendType:    (descriptor.SendType)(0),
+			Description: (string)(""),
+			Signals: ([]*descriptor.Signal)([]*descriptor.Signal{
+				(*descriptor.Signal)(&descriptor.Signal{
+					Name:              (string)("egt_ext1"),
+					Start:             (uint8)(7),
+					Length:            (uint8)(16),
+					IsBigEndian:       (bool)(true),
+					IsSigned:          (bool)(false),
+					IsMultiplexer:     (bool)(false),
+					IsMultiplexed:     (bool)(false),
+					MultiplexerValue:  (uint)(0),
+					Offset:            (float64)(0),
+					Scale:             (float64)(1),
+					Min:               (float64)(0),
+					Max:               (float64)(0),
+					Unit:              (string)("deg C"),
+					Description:       (string)(""),
+					ValueDescriptions: ([]*descriptor.ValueDescription)(nil),
+					ReceiverNodes: ([]string)([]string{
+						(string)("Vector__XXX"),
+					}),
+					DefaultValue: (int)(0),
+				}),
+				(*descriptor.Signal)(&descriptor.Signal{
+					Name:              (string)("egt_ext1_error"),
+					Start:             (uint8)(23),
+					Length:            (uint8)(8),
+					IsBigEndian:       (bool)(true),
+					IsSigned:          (bool)(false),
+					IsMultiplexer:     (bool)(false),
+					IsMultiplexed:     (bool)(false),
+					MultiplexerValue:  (uint)(0),
+					Offset:            (float64)(0),
+					Scale:             (float64)(1),
+					Min:               (float64)(0),
+					Max:               (float64)(0),
+					Unit:              (string)("bit"),
+					Description:       (string)(""),
+					ValueDescriptions: ([]*descriptor.ValueDescription)(nil),
+					ReceiverNodes: ([]string)([]string{
+						(string)("Vector__XXX"),
+					}),
+					DefaultValue: (int)(0),
+				}),
+			}),
+			SenderNode: (string)("Vector__XXX"),
+			CycleTime:  (time.Duration)(0),
+			DelayTime:  (time.Duration)(0),
+		}),
+		(*descriptor.Message)(&descriptor.Message{
+			Name:        (string)("mscop_analog"),
+			ID:          (uint32)(2026),
+			IsExtended:  (bool)(false),
+			Length:      (uint8)(8),
+			SendType:    (descriptor.SendType)(0),
+			Description: (string)(""),
+			Signals: ([]*descriptor.Signal)([]*descriptor.Signal{
+				(*descriptor.Signal)(&descriptor.Signal{
+					Name:              (string)("adc_ext1"),
+					Start:             (uint8)(7),
+					Length:            (uint8)(16),
+					IsBigEndian:       (bool)(true),
+					IsSigned:          (bool)(false),
+					IsMultiplexer:     (bool)(false),
+					IsMultiplexed:     (bool)(false),
+					MultiplexerValue:  (uint)(0),
+					Offset:            (float64)(0),
+					Scale:             (float64)(1),
+					Min:               (float64)(0),
+					Max:               (float64)(4096),
+					Unit:              (string)(""),
+					Description:       (string)(""),
+					ValueDescriptions: ([]*descriptor.ValueDescription)(nil),
+					ReceiverNodes: ([]string)([]string{
+						(string)("Vector__XXX"),
+					}),
+					DefaultValue: (int)(0),
+				}),
+				(*descriptor.Signal)(&descriptor.Signal{
+					Name:              (string)("adc_ext2"),
+					Start:             (uint8)(23),
+					Length:            (uint8)(16),
+					IsBigEndian:       (bool)(true),
+					IsSigned:          (bool)(false),
+					IsMultiplexer:     (bool)(false),
+					IsMultiplexed:     (bool)(false),
+					MultiplexerValue:  (uint)(0),
+					Offset:            (float64)(0),
+					Scale:             (float64)(1),
+					Min:               (float64)(0),
+					Max:               (float64)(4096),
+					Unit:              (string)(""),
+					Description:       (string)(""),
+					ValueDescriptions: ([]*descriptor.ValueDescription)(nil),
+					ReceiverNodes: ([]string)([]string{
+						(string)("Vector__XXX"),
+					}),
+					DefaultValue: (int)(0),
+				}),
+				(*descriptor.Signal)(&descriptor.Signal{
+					Name:              (string)("adc_ext3"),
+					Start:             (uint8)(39),
+					Length:            (uint8)(16),
+					IsBigEndian:       (bool)(true),
+					IsSigned:          (bool)(false),
+					IsMultiplexer:     (bool)(false),
+					IsMultiplexed:     (bool)(false),
+					MultiplexerValue:  (uint)(0),
+					Offset:            (float64)(0),
+					Scale:             (float64)(1),
+					Min:               (float64)(0),
+					Max:               (float64)(4096),
+					Unit:              (string)(""),
+					Description:       (string)(""),
+					ValueDescriptions: ([]*descriptor.ValueDescription)(nil),
+					ReceiverNodes: ([]string)([]string{
+						(string)("Vector__XXX"),
+					}),
+					DefaultValue: (int)(0),
+				}),
+				(*descriptor.Signal)(&descriptor.Signal{
+					Name:              (string)("adc_ext4"),
+					Start:             (uint8)(55),
+					Length:            (uint8)(16),
+					IsBigEndian:       (bool)(true),
+					IsSigned:          (bool)(false),
+					IsMultiplexer:     (bool)(false),
+					IsMultiplexed:     (bool)(false),
+					MultiplexerValue:  (uint)(0),
+					Offset:            (float64)(0),
+					Scale:             (float64)(1),
+					Min:               (float64)(0),
+					Max:               (float64)(4096),
+					Unit:              (string)(""),
+					Description:       (string)(""),
+					ValueDescriptions: ([]*descriptor.ValueDescription)(nil),
+					ReceiverNodes: ([]string)([]string{
+						(string)("Vector__XXX"),
+					}),
+					DefaultValue: (int)(0),
+				}),
+			}),
+			SenderNode: (string)("Vector__XXX"),
+			CycleTime:  (time.Duration)(0),
+			DelayTime:  (time.Duration)(0),
+		}),
+		(*descriptor.Message)(&descriptor.Message{
+			Name:        (string)("mscop_knock"),
+			ID:          (uint32)(2027),
+			IsExtended:  (bool)(false),
+			Length:      (uint8)(6),
+			SendType:    (descriptor.SendType)(0),
+			Description: (string)(""),
+			Signals: ([]*descriptor.Signal)([]*descriptor.Signal{
+				(*descriptor.Signal)(&descriptor.Signal{
+					Name:              (string)("knock_ext"),
+					Start:             (uint8)(7),
+					Length:            (uint8)(16),
+					IsBigEndian:       (bool)(true),
+					IsSigned:          (bool)(false),
+					IsMultiplexer:     (bool)(false),
+					IsMultiplexed:     (bool)(false),
+					MultiplexerValue:  (uint)(0),
+					Offset:            (float64)(0),
+					Scale:             (float64)(1),
+					Min:               (float64)(0),
+					Max:               (float64)(1023),
+					Unit:              (string)(""),
+					Description:       (string)(""),
+					ValueDescriptions: ([]*descriptor.ValueDescription)(nil),
+					ReceiverNodes: ([]string)([]string{
+						(string)("Vector__XXX"),
+					}),
+					DefaultValue: (int)(0),
+				}),
+				(*descriptor.Signal)(&descriptor.Signal{
+					Name:              (string)("knock_rpm"),
+					Start:             (uint8)(23),
+					Length:            (uint8)(16),
+					IsBigEndian:       (bool)(true),
+					IsSigned:          (bool)(false),
+					IsMultiplexer:     (bool)(false),
+					IsMultiplexed:     (bool)(false),
+					MultiplexerValue:  (uint)(0),
+					Offset:            (float64)(0),
+					Scale:             (float64)(1),
+					Min:               (float64)(0),
+					Max:               (float64)(0),
+					Unit:              (string)("RPM"),
+					Description:       (string)(""),
+					ValueDescriptions: ([]*descriptor.ValueDescription)(nil),
+					ReceiverNodes: ([]string)([]string{
+						(string)("Vector__XXX"),
+					}),
+					DefaultValue: (int)(0),
+				}),
+				(*descriptor.Signal)(&descriptor.Signal{
+					Name:              (string)("knock_integ_time"),
+					Start:             (uint8)(39),
+					Length:            (uint8)(8),
+					IsBigEndian:       (bool)(true),
+					IsSigned:          (bool)(false),
+					IsMultiplexer:     (bool)(false),
+					IsMultiplexed:     (bool)(false),
+					MultiplexerValue:  (uint)(0),
+					Offset:            (float64)(0),
+					Scale:             (float64)(1),
+					Min:               (float64)(0),
+					Max:               (float64)(0),
+					Unit:              (string)("uS"),
+					Description:       (string)(""),
+					ValueDescriptions: ([]*descriptor.ValueDescription)(nil),
+					ReceiverNodes: ([]string)([]string{
+						(string)("Vector__XXX"),
+					}),
+					DefaultValue: (int)(0),
+				}),
+				(*descriptor.Signal)(&descriptor.Signal{
+					Name:              (string)("knock_error"),
+					Start:             (uint8)(47),
+					Length:            (uint8)(8),
+					IsBigEndian:       (bool)(true),
+					IsSigned:          (bool)(false),
+					IsMultiplexer:     (bool)(false),
+					IsMultiplexed:     (bool)(false),
+					MultiplexerValue:  (uint)(0),
+					Offset:            (float64)(0),
+					Scale:             (float64)(1),
+					Min:               (float64)(0),
+					Max:               (float64)(0),
+					Unit:              (string)(""),
+					Description:       (string)(""),
+					ValueDescriptions: ([]*descriptor.ValueDescription)(nil),
+					ReceiverNodes: ([]string)([]string{
+						(string)("Vector__XXX"),
+					}),
+					DefaultValue: (int)(0),
+				}),
+			}),
+			SenderNode: (string)("Vector__XXX"),
+			CycleTime:  (time.Duration)(0),
+			DelayTime:  (time.Duration)(0),
+		}),
 	}),
-	Nodes: ([]*descriptor.Node)(nil),
+	Nodes: ([]*descriptor.Node)([]*descriptor.Node{
+		(*descriptor.Node)(&descriptor.Node{
+			Name:        (string)("Vector__XXX"),
+			Description: (string)(""),
+		}),
+	}),
 })

@@ -57,6 +57,7 @@ func processFile(inputFile *os.File, datalog *logcollector.DataLog) {
 
 		msg, err := megasquirtcan.Messages().UnmarshalFrame(record.Frame)
 		if err != nil {
+			glog.Error(err)
 			continue
 		}
 		err = datalog.AddDataRecord(&msg, record.Microseconds)

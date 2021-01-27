@@ -465,6 +465,21 @@ BO_ 1520 megasquirt_gp0: 8 Vector__XXX
  SG_ pw1 : 23|16@0+ (0.001,0) [0|0] "ms" Vector__XXX
  SG_ seconds : 7|16@0+ (1,0) [0|0] "s" Vector__XXX
 
+BO_ 2025 mscop_egt: 3 Vector__XXX
+ SG_ egt_ext1_error : 23|8@0+ (1,0) [0|0] "bit" Vector__XXX
+ SG_ egt_ext1 : 7|16@0+ (1,0) [0|0] "deg C" Vector__XXX
+
+BO_ 2026 mscop_analog: 8 Vector__XXX
+ SG_ adc_ext4 : 55|16@0+ (1,0) [0|4096] "" Vector__XXX
+ SG_ adc_ext3 : 39|16@0+ (1,0) [0|4096] "" Vector__XXX
+ SG_ adc_ext2 : 23|16@0+ (1,0) [0|4096] "" Vector__XXX
+ SG_ adc_ext1 : 7|16@0+ (1,0) [0|4096] "" Vector__XXX
+
+BO_ 2027 mscop_knock: 6 Vector__XXX
+ SG_ knock_error : 47|8@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ knock_integ_time : 39|8@0+ (1,0) [0|0] "uS" Vector__XXX
+ SG_ knock_rpm : 23|16@0+ (1,0) [0|0] "RPM" Vector__XXX
+ SG_ knock_ext : 7|16@0+ (1,0) [0|1023] "" Vector__XXX
 
 
 CM_ SG_ 1570 launch_retard "Launch retard";
